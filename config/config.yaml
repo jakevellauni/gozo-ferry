@@ -1,0 +1,29 @@
+# Non-secret settings. Safe to share.
+data_path: "data/gozo_ferry.csv"
+model_path: "models/model.joblib"
+knots_to_kmh: 1.852
+seed: 42
+warning_threshold: 0.5
+
+# Training window: null trains on every row of data_path before the holdout.
+# Set a date (YYYY-MM-DD) to train on rows from that date only.
+# From 1 February 2025: the champion's window (Session 6). `gozo-train --train-start none` trains on all of 2025.
+train_start: "2025-02-01"
+
+# The frozen holdout: the last eight weeks of 2025, cut once and never edited.
+# If the file's SHA-256 no longer matches, the gate refuses to run (exit code 2).
+holdout_path: "data/holdout.csv"
+holdout_start: "2025-11-06"
+holdout_sha256: "fa8745708256b933415deaca764ce549328e69344b15280cccc7fa06dfc3d91d"
+
+# The quality gate: which metric blocks a release, and its threshold.
+# Metrics available: accuracy, precision, recall, f1, roc_auc
+# Accuracy is useless here: cancellations are rare, so "never cancel" already scores about 0.84 on the holdout.
+gate_metric: "f1"
+gate_threshold: 0.70
+
+# MLflow (Session 6). MLFLOW_TRACKING_URI in .env overrides tracking_uri.
+mlflow:
+  tracking_uri: "http://localhost:5000"
+  experiment: "gozo_ferry"
+  model_name: "gozo_ferry"

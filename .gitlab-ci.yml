@@ -1,0 +1,22 @@
+# Session 5, Stage 13: the same pipeline on GitLab CI. Different spelling, same `make` targets.
+stages: [ci, publish]
+
+ci:
+  stage: ci
+  image: python:3.13
+  script:
+    - make install
+    - cp env.example .env
+    - make lint test validate gate
+
+publish:
+  stage: publish
+  image: docker:27
+  services: [docker:27-dind]
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+  before_script:
+    - apk add --no-cache make python3 git    # the Alpine image ships none of them; git gives the commit tag
+    - echo "$CI_REGISTRY_PASSWORD" | docker login -u "$CI_REGISTRY_USER" --password-stdin "$CI_REGISTRY"
+  script:
+    - make build publish IMAGE="$CI_REGISTRY_IMAGE/gozo-ferry"

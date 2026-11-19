@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gozo_ferry"
+version = "0.6.0"
+requires-python = ">=3.11"
+dependencies = [
+    "pandas>=2.0",
+    "scikit-learn>=1.4",
+    "joblib>=1.3",
+    "pyyaml>=6.0",
+    "python-dotenv>=1.0",
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
+    "psycopg[binary]>=3.2",
+    "prometheus-client>=0.20",
+    "mlflow-skinny==3.17.2",
+    "skops>=0.13",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.15",
+    "pandera>=0.30",
+    "hypothesis>=6.100",
+    "httpx>=0.27",
+]
+
+[project.scripts]
+gozo-train = "gozo_ferry.train:main"
+gozo-validate = "gozo_ferry.validate:main"
+gozo-gate = "gozo_ferry.evaluate:main"
+gozo-registry = "gozo_ferry.registry:main"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+# Pin the rule set, so a ruff upgrade cannot change what the pipeline checks.
+select = ["E4", "E7", "E9", "F"]
