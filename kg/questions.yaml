@@ -1,0 +1,35 @@
+# The questions the operator asks about its 2025 cancellations (Session 7, Stage 16), with the answers worked out by
+# hand from data/gozo_operations_2025.csv before any code was written. gozo-ask and gozo-kg score each route
+# against them.
+#
+# ask       count: how many cancellations; top_vessel: the vessel with the most cancellations
+# about     port: the terms name a port; reason: the terms name a reason
+# terms     the words in the question that carry its meaning
+# expected  the answer: a number of cancellations, or a vessel id from kg/vessels.yaml
+#
+# Worked by hand:
+#   mgarr      Mgarr 7 + Mġarr 7 + mgarr 6 + Mgarr Harbour 6 + "Mġarr, Gozo" 5 + MGARR 3 = 34 (Ċirkewwa: 43; 77 in all)
+#   weather    wind 28 (gale warning 8, strong NW wind 8, gusts over 40 knots 8, high winds 4)
+#              + sea 29 (rough sea 12, heavy swell at harbour entrance 9, swell over 3 m 8)
+#              + visibility 4 (poor visibility 2, fog 2) = 61
+#   technical  bow thruster fault 6 + steering alarm 3 + engine fault 1 = 10: MV Ramla 5, MV Dwejra 3, MV Calypso 2
+
+questions:
+  - id: mgarr
+    question: How many crossings from Mġarr were cancelled in 2025?
+    ask: count
+    about: port
+    terms: [Mgarr]
+    expected: 34
+  - id: weather
+    question: How many cancellations did the weather cause in 2025?
+    ask: count
+    about: reason
+    terms: [weather]
+    expected: 61
+  - id: technical
+    question: Which vessel had the most technical cancellations in 2025?
+    ask: top_vessel
+    about: reason
+    terms: [technical]
+    expected: ramla

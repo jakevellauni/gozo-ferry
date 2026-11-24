@@ -1,0 +1,26 @@
+# Why a crossing is cancelled (Session 7, Stage 16): a taxonomy of reasons, each a kind of its broader reason
+# (is_a). Three top reasons; weather has three narrower ones. labels holds the words that mean the reason: the
+# question words staff use (weather, technical) and every wording staff on duty wrote in the log, exactly as written.
+# A wording that matches no reason stops the build.
+reasons:
+  - id: weather
+    name: Weather
+    labels: [weather]
+  - id: wind
+    name: Wind
+    is_a: weather
+    labels: [wind, gale warning, strong NW wind, gusts over 40 knots, high winds]  # decided: a gale warning is a wind cancellation, although no gust was measured
+  - id: sea
+    name: Sea state
+    is_a: weather
+    labels: [sea, rough sea, swell over 3 m, heavy swell at harbour entrance]  # decided: swell at the harbour entrance is sea state, not a port operation
+  - id: visibility
+    name: Visibility
+    is_a: weather
+    labels: [visibility, poor visibility, fog]
+  - id: technical
+    name: Technical
+    labels: [technical, bow thruster fault, steering alarm, engine fault]  # decided: an alarm counts as technical even if no fault is found
+  - id: operational
+    name: Operational
+    labels: [operational, berth occupied, crew shortage]

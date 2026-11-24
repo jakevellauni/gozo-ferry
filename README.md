@@ -196,3 +196,36 @@ make champion V=2                            # and forward again
 To work without the registry on your own machine, outside compose, set `MODEL_URI=models/model.joblib` (written by `gozo-train`) and run uvicorn directly. The image holds no model file, so inside compose the API always needs the registry.
 
 The model card is in `docs/model_card.md`; attach it to a version with `gozo-registry card 2 docs/model_card.md`.
+
+## The knowledge layer (Session 7, Stage 16)
+
+The cancellation log, `data/gozo_operations_2025.csv`, records 77 cancelled crossings of 2025 as staff on duty wrote them: the two ports are written ten ways and the reasons fourteen ways. The knowledge in `kg/` says what each entry means:
+
+| File | What it holds |
+| --- | --- |
+| `kg/schema.yaml` | The classes (port, vessel, reason, label, cancellation), their relationships and cardinalities, and the version of the knowledge |
+| `kg/ports.yaml` | Mġarr and Ċirkewwa, each with every spelling found in the log |
+| `kg/reasons.yaml` | Weather (wind, sea state, visibility), technical, operational, each with its wordings |
+| `kg/vessels.yaml` | The fleet |
+| `kg/questions.yaml` | The competency questions, with the answers worked out by hand |
+
+```bash
+make profile                      # the log as written: spellings per port, wordings per reason
+make ask                          # both routes on the three questions; ROUTE=keyword SHOW=--show to see what a search finds
+make kg-version                   # the version of the knowledge, from kg/schema.yaml
+```
+
+The decision to add the layer, and the choice of a cancellation's key (date, time and port), are in `docs/adr/0001-knowledge-layer.md`.
+
+### How a change to `kg/` is reviewed and released
+
+A change to `kg/` is a change like any other: it goes on a branch, through a pull request, and cannot be merged until `make ci` passes on GitHub. The tests are the gate for the knowledge: every file must conform to the schema, every log entry must link to a port, a vessel and a reason, and every competency question must give its expected answer. A new spelling of a port, or a new wording of a reason, stops the build until the operations manager adds it to the labels, or decides it is something new.
+
+The knowledge has a version of its own, in one place: the `version` line of `kg/schema.yaml`. Once `main` passes, release it as a tag:
+
+```bash
+make kg-release                   # runs the tests, refuses uncommitted changes, tags kg-v<version>
+git push origin kg-v1.0
+```
+
+A tag is never reused. To release a change, raise the version (1.1 for added or corrected knowledge, 2.0 for a change to the schema that files or queries depend on), commit, and release again.

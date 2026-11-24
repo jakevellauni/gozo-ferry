@@ -1,0 +1,5 @@
+# The fleet (Session 7, Stage 16). name is written exactly as in data/gozo_operations_2025.csv. Fictitious.
+vessels:
+  - {id: calypso, name: MV Calypso}
+  - {id: dwejra, name: MV Dwejra}
+  - {id: ramla, name: MV Ramla}

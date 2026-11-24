@@ -1,0 +1,10 @@
+# The two ports a crossing departs from (Session 7, Stage 16). name is the official spelling; labels holds every way
+# staff on duty wrote the port in data/gozo_operations_2025.csv, each exactly as written. A spelling not listed here
+# stops the build: it is a new spelling, or a new port, and the operations manager decides which.
+ports:
+  - id: mgarr
+    name: Mġarr
+    labels: [Mġarr, Mgarr, mgarr, MGARR, Mgarr Harbour, "Mġarr, Gozo"]
+  - id: cirkewwa
+    name: Ċirkewwa
+    labels: [Ċirkewwa, Cirkewwa, CIRKEWWA, Cirkewwa terminal]

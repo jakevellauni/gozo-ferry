@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "gozo_ferry"
-version = "0.6.0"
+version = "0.7.0"
 requires-python = ">=3.11"
 dependencies = [
     "pandas>=2.0",
@@ -34,6 +34,7 @@ gozo-train = "gozo_ferry.train:main"
 gozo-validate = "gozo_ferry.validate:main"
 gozo-gate = "gozo_ferry.evaluate:main"
 gozo-registry = "gozo_ferry.registry:main"
+gozo-ask = "gozo_ferry.ask:main"
 
 [tool.ruff]
 line-length = 120
