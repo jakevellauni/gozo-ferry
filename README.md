@@ -229,3 +229,31 @@ git push origin kg-v1.0
 ```
 
 A tag is never reused. To release a change, raise the version (1.1 for added or corrected knowledge, 2.0 for a change to the schema that files or queries depend on), commit, and release again.
+
+## The knowledge graph (Session 7, Stage 17)
+
+The same knowledge, built into an RDF graph with rdflib and queried in SPARQL. The reasons are a SKOS concept scheme (`skos:broader` for "is a kind of"), and every port spelling and reason wording is an alternative label (`skos:altLabel`). Each cancellation's IRI is minted from its key, the date, the time and the port (ADR 0001), so loading twice changes nothing.
+
+```bash
+make kg-load                      # add the release and the log to kg/build/gozo.nt; prints the triple count and SHA-256
+make kg-count                     # triples, instances of each class, uses of each property, the release
+make kg-ask                       # the three questions in SPARQL; exits 1 if any answer differs
+make kg-check                     # what make ci runs: build from nothing, load twice, same SHA-256, answer every question
+```
+
+Release 1.0 gives 695 triples, and its store's fingerprint starts `6b08e8d6c8c5b166`.
+
+### Rebuilding the store
+
+The store is derived from `kg/` and the log, so it is not committed (`kg/build/` is in `.gitignore`) and needs no backup: rebuild it with `make kg-clean` and `make kg-load`, or `make kg-check`. Always rebuild from nothing after changing `kg/`: `make kg-load` adds to what the store holds, so loading two releases without `make kg-clean` would state both.
+
+### Going back to a release
+
+`make kg-release` runs the tests and `make kg-check`, then records the store's fingerprint in the tag's message (`git tag -n` shows it). To go back to a release, restore its files and rebuild:
+
+```bash
+git checkout kg-v1.0 -- kg/
+make kg-check                     # the SHA-256 printed must match the one in the tag's message
+```
+
+If it matches, the store is exactly the released one; commit the restored files to withdraw the later release (`git revert` does the same in one step).
