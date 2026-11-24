@@ -17,7 +17,7 @@ reasons:
   - id: visibility
     name: Visibility
     is_a: weather
-    labels: [visibility, poor visibility, fog]
+    labels: [visibility, poor visibility]
   - id: technical
     name: Technical
     labels: [technical, bow thruster fault, steering alarm, engine fault]  # decided: an alarm counts as technical even if no fault is found
